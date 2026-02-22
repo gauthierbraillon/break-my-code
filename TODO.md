@@ -34,62 +34,41 @@ git push -u origin main
 
 ---
 
-### 2. Install flyctl
+### 2. Create a Railway project
 
-```bash
-curl -L https://fly.io/install.sh | sh
-```
+Go to https://railway.app → sign up / log in → New Project → Deploy from GitHub repo → select `break-my-code`.
 
-Then add to your shell PATH (flyctl will print the exact line).
+Railway will auto-detect the Dockerfile.
 
 ---
 
-### 3. Create a Fly.io account
+### 3. Generate a Railway service token
 
-Go to https://fly.io → sign up → then authenticate:
+In your Railway project → Settings → Tokens → Create Token (type: **Project** token).
 
-```bash
-flyctl auth login
-```
+Copy the token.
 
 ---
 
-### 4. Create the Fly.io app and generate a deploy token
-
-```bash
-cd /home/gosha/Repo/python_playground
-flyctl launch --no-deploy --name break-my-code
-```
-
-This creates `fly.toml`. Then generate a CI token:
-
-```bash
-flyctl tokens create deploy -x 999999h
-```
-
-Copy the token output.
-
----
-
-### 5. Add FLY_API_TOKEN to GitHub secrets
+### 4. Add RAILWAY_TOKEN to GitHub secrets
 
 Go to:
 `https://github.com/gauthierbraillon/break-my-code/settings/secrets/actions`
 
 Add secret:
-- Name: `FLY_API_TOKEN`
-- Value: the token from step 4
+- Name: `RAILWAY_TOKEN`
+- Value: the token from step 3
 
 ---
 
-### 6. Trigger the first deploy
+### 5. Trigger the first deploy
 
 Push any change to `main` (or re-push) — GitHub Actions will:
 1. Lint (ruff)
 2. Security scan (bandit)
 3. Acceptance tests (pytest)
 4. Performance gate (100ms threshold)
-5. Deploy to Fly.io → live URL
+5. Deploy to Railway → live URL
 
 ---
 
